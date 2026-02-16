@@ -1,0 +1,19 @@
+type: specs.openrewrite.org/v1beta/recipe
+name: com.company.Java17Migration
+displayName: Java 11 to 17 + Jakarta Migration
+
+recipeList:
+
+  # JDK upgrade
+  - org.openrewrite.java.migrate.UpgradeToJava17
+
+  # Convert javax → jakarta imports
+  - org.openrewrite.java.migrate.jakarta.JavaxWsToJakartaWs
+
+  # Replace dependency
+  - org.openrewrite.maven.ChangeDependency:
+      oldGroupId: javax.ws.rs
+      oldArtifactId: javax.ws.rs-api
+      newGroupId: jakarta.ws.rs
+      newArtifactId: jakarta.ws.rs-api
+      newVersion: 3.1.0
