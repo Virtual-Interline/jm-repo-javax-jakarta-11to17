@@ -3,9 +3,6 @@ name: Build Maven
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches-ignore:
-      - 'rewrite/**'
 
 jobs:
   build:
