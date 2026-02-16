@@ -1,49 +1,71 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-
 
     <groupId>com.example</groupId>
     <artifactId>repo-javax-jakarta</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <!-- ✅ Centralised build config -->
     <properties>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- Start from 11 (Rewrite will upgrade later if recipe demands) -->
+        <maven.compiler.release>11</maven.compiler.release>
+
+        <rewrite.plugin.version>5.40.2</rewrite.plugin.version>
+        <rewrite.recipe.version>2.21.0</rewrite.recipe.version>
     </properties>
 
     <dependencies>
-
+        <!-- javax dependency (will be auto-migrated by OpenRewrite) -->
         <dependency>
             <groupId>javax.ws.rs</groupId>
             <artifactId>javax.ws.rs-api</artifactId>
             <version>2.1.1</version>
         </dependency>
-
     </dependencies>
+
     <build>
         <plugins>
+
+            <!-- ✅ Proper compiler configuration -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
+                <configuration>
+                    <release>${maven.compiler.release}</release>
+                </configuration>
+            </plugin>
+
+            <!-- ✅ OpenRewrite Migration Plugin -->
             <plugin>
                 <groupId>org.openrewrite.maven</groupId>
                 <artifactId>rewrite-maven-plugin</artifactId>
-                <version>5.40.2</version>
+                <version>${rewrite.plugin.version}</version>
+
                 <configuration>
-                    <configLocation>rewrite.yml</configLocation>
+                    <configLocation>${project.basedir}/rewrite.yml</configLocation>
                     <activeRecipes>
                         <recipe>com.company.Java17Migration</recipe>
                     </activeRecipes>
                 </configuration>
+
+                <!-- Needed so Maven can see migration recipes -->
                 <dependencies>
                     <dependency>
                         <groupId>org.openrewrite.recipe</groupId>
                         <artifactId>rewrite-migrate-java</artifactId>
-                        <version>2.21.0</version>
+                        <version>${rewrite.recipe.version}</version>
                     </dependency>
                 </dependencies>
             </plugin>
+
         </plugins>
     </build>
+
 </project>
