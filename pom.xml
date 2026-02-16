@@ -14,7 +14,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <!-- Start from 11 (Rewrite will upgrade later if recipe demands) -->
-        <maven.compiler.release>11</maven.compiler.release>
+        <maven.compiler.release>17</maven.compiler.release>
 
         <rewrite.plugin.version>5.40.2</rewrite.plugin.version>
         <rewrite.recipe.version>2.21.0</rewrite.recipe.version>
@@ -23,9 +23,9 @@
     <dependencies>
         <!-- javax dependency (will be auto-migrated by OpenRewrite) -->
         <dependency>
-            <groupId>javax.ws.rs</groupId>
-            <artifactId>javax.ws.rs-api</artifactId>
-            <version>2.1.1</version>
+            <groupId>jakarta.ws.rs</groupId>
+            <artifactId>jakarta.ws.rs-api</artifactId>
+            <version>4.0.0</version>
         </dependency>
     </dependencies>
 
@@ -38,7 +38,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.11.0</version>
                 <configuration>
-                    <release>${maven.compiler.release}</release>
+                    <release>17</release>
                 </configuration>
             </plugin>
 
