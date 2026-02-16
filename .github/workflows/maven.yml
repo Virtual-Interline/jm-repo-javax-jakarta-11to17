@@ -33,12 +33,8 @@ jobs:
       - name: Build with Maven
         run: mvn -B clean verify
       - name: Run OpenRewrite
-        with:
-          base: main
         run: mvn -U org.openrewrite.maven:rewrite-maven-plugin:run
       - name: Run OpenRewrite
-        with:
-          base: main
         run: mvn -B rewrite:run
       - name: Remove build artifacts
         run: |
