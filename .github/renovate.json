@@ -1,0 +1,77 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+
+  "extends": [
+    "config:base",
+    ":disableRateLimiting",
+    ":separateMajorReleases",
+    ":semanticCommits"
+  ],
+
+  "labels": ["dependencies", "java-upgrade"],
+
+  "timezone": "Asia/Kolkata",
+  "prConcurrentLimit": 5,
+  "prHourlyLimit": 2,
+
+  "dependencyDashboard": true,
+
+  "rebaseWhen": "conflicted",
+
+  "rangeStrategy": "replace",
+
+  "enabledManagers": ["maven", "regex", "github-actions", "dockerfile"],
+
+  "regexManagers": [
+    {
+      "description": "Track Java version property",
+      "fileMatch": ["(^|/)pom.xml$"],
+      "matchStrings": [
+        "<java.version>(?<currentValue>.*?)</java.version>"
+      ],
+      "depNameTemplate": "jdk",
+      "datasourceTemplate": "java-version"
+    }
+  ],
+
+  "packageRules": [
+    {
+      "description": "Allow only Java LTS versions",
+      "matchDepNames": ["jdk"],
+      "allowedVersions": "/^(11|17|21)$/"
+    },
+    {
+      "description": "Upgrade Maven build plugins together",
+      "matchManagers": ["maven"],
+      "matchDepTypes": ["plugin"],
+      "groupName": "maven-build-plugins"
+    },
+    {
+      "description": "Group test dependencies",
+      "matchManagers": ["maven"],
+      "matchDepTypes": ["test"],
+      "groupName": "test-dependencies"
+    },
+    {
+      "description": "Track JDK Docker images",
+      "matchManagers": ["dockerfile"],
+      "matchPackageNames": ["eclipse-temurin", "openjdk", "amazoncorretto"]
+    },
+    {
+      "description": "Keep GitHub Actions updated",
+      "matchManagers": ["github-actions"],
+      "groupName": "github-actions"
+    }
+  ],
+  "ignorePaths": [
+    "**/target/**",
+    "**/build/**"
+  ],
+
+  "commitMessagePrefix": "chore(deps):",
+
+  "prBodyNotes": [
+    "This PR is part of the controlled Java LTS migration path (8 → 11 → 17 → 21).",
+    "Run OpenRewrite recipes after merging if compilation issues occur."
+  ]
+}
