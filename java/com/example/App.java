@@ -1,6 +1,6 @@
 package com.example;
 
-import javax.ws.rs.GET;
+import jakarta.ws.rs.GET;
 
 public class App {
     public static void main(String[] args) {
